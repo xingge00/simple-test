@@ -1,6 +1,3 @@
-import { createApp } from 'vue'
-import App from '@/App.vue'
+import Modules from './modules/index'
 
-const app = createApp(App)
-
-app.mount('#app')
+console.log(Modules)
