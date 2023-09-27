@@ -6,10 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "dev:a": "node test.js",
-    "dev:b": "node test.js",
- 
+    "preview": "vite preview"
   },
   "dependencies": {
     "vue": "^3.2.45"

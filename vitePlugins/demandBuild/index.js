@@ -1,23 +1,25 @@
 import path from 'path'
 import fs from 'fs'
 
-const KeyWord = 'demandBuild'
+const KeyWord = '// !!injectModules //'
 
 const injectCode = () => {
   const rootPath = process.cwd()
   const targetPath = path.normalize(`${rootPath}/src/modules`)
-  const dirList = fs.readdirSync(targetPath).filter(dir => !dir.includes('.')).filter(dir => dir === 'a')
+  const dirList = fs.readdirSync(targetPath).filter(dir => !dir.includes('.'))
   console.log(dirList)
   // return `${
   //   dirList.map(module => `import ${module} from './modules/${module}/main.js'`).join('\n')
   // }`
 
   const res = dirList.map((module) => {
-    return `
-    import ${module} from './${module}/main.js'
-    `
-  }).join('\n')
-  return `${res}`
+    const key = `./${module}/main.js`
+    return `${module}: import.meta.globEager('${key}')['${key}'].default`
+  }).join(',\n    ')
+  return `
+  modules = {
+    ${res}
+  }`
 }
 
 export const demandBuild = () => {
@@ -36,9 +38,9 @@ export const demandBuild = () => {
     },
     transform(code) {
       let res = code
-      if (code.includes('// !!injectBuild //')) {
+      if (code.includes(KeyWord)) {
         const temp = injectCode()
-        res = code.replaceAll('// !!injectBuild //', temp)
+        res = code.replaceAll(KeyWord, temp)
         console.log(temp)
       }
 

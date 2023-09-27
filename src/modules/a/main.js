@@ -1,7 +1,16 @@
 import Com from './com.vue'
 
-let count = 0
-console.log('a', count++)
-console.log('Com', Com)
-
-export default 'a'
+const store = {
+  state: {
+    count: '',
+  },
+}
+const router = [{ name: 'a/view' }]
+const component = {
+  Com,
+}
+export default {
+  store,
+  router,
+  component,
+}
