@@ -1,11 +1,12 @@
 
 <script setup>
-
+import TopBar from './Layout/TopBar.vue'
 </script>
 
 <template>
   <div class="app-container">
-    dsad
+    <TopBar></TopBar>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -13,7 +14,6 @@
 .app-container {
   width: 100%;
   height: 100vh;
-  display:flex;
 
 }
 </style>

@@ -5,7 +5,7 @@
 
 <template>
   <div class="app-container">
-    acom
+    Ac
   </div>
 </template>
 

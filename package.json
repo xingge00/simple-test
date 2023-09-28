@@ -4,12 +4,19 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "env-cmd -e dev vite",
+    "dev:a": "cross-env VITE_DEV_MODULE=a env-cmd -e dev vite",
+    "dev:b": "cross-env VITE_DEV_MODULE=b env-cmd -e dev vite",
+    "build": "env-cmd -e test vite build",
+    "build:test": "env-cmd -e test vite build",
+    "build:prod": "env-cmd -e prod vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.2.45"
+    "cross-env": "^7.0.3",
+    "env-cmd": "^10.1.0",
+    "vue": "^3.2.45",
+    "vue-router": "4"
   },
   "devDependencies": {
     "@mistjs/eslint-config-vue": "^0.0.3",

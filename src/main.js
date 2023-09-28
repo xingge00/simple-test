@@ -1,9 +1,7 @@
-import Modules,{initStore, initRouter, initComponent} from './modules/index'
+import { createApp } from 'vue'
+import App from '@/App.vue'
+import router from '@/router/index'
 
-console.log(Modules)
+const app = createApp(App)
 
-console.log('initStore',  
-initStore,
-initRouter,
-initComponent,
-)
+app.use(router).mount('#app')

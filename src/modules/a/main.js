@@ -1,13 +1,13 @@
-import Com from './com.vue'
+import router from './router'
 
 const store = {
   state: {
     count: '',
   },
 }
-const router = [{ name: 'a/view' }]
+
 const component = {
-  Com,
+
 }
 export default {
   store,

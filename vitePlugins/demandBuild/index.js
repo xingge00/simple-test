@@ -1,18 +1,16 @@
 import path from 'path'
 import fs from 'fs'
 
-const KeyWord = '// !!injectModules //'
-
-const injectCode = () => {
+const injectCode = (modulesConfig) => {
   const rootPath = process.cwd()
   const targetPath = path.normalize(`${rootPath}/src/modules`)
-  const dirList = fs.readdirSync(targetPath).filter(dir => !dir.includes('.'))
+  const dirList = fs.readdirSync(targetPath).filter(dir => !dir.includes('index.js'))
   console.log(dirList)
-  // return `${
-  //   dirList.map(module => `import ${module} from './modules/${module}/main.js'`).join('\n')
-  // }`
 
-  const res = dirList.map((module) => {
+  const res = dirList.filter((i) => {
+    if (!modulesConfig) return true // 如果没有配置则加载全部
+    return modulesConfig.split(',').includes(i)
+  }).map((module) => {
     const key = `./${module}/main.js`
     return `${module}: import.meta.globEager('${key}')['${key}'].default`
   }).join(',\n    ')
@@ -22,25 +20,23 @@ const injectCode = () => {
   }`
 }
 
-export const demandBuild = () => {
+export const demandBuild = (config) => {
+  const {
+    placeholderKeyWord = '// !!injectModules //',
+    modulesConfig,
+  } = config
   return {
     name: 'vite-plugin-demand-build',
     enforce: 'pre',
-    resolveId(id) {
-      // if (id === KeyWord) {
-      //   return id // 返回id表明命中，vite不再询问其他插件处理该id请求
-      // }
-      return null // 返回null表明是其他id要继续处理
-    },
-    load(id) {
-      // if (id === KeyWord) return injectCode()
-      return null
-    },
-    transform(code) {
+
+    transform(code, id) {
+      // 优化：只有src/modules/index.js才出发占位符替换
+      if (!id.includes('src/modules/index.js')) return code
+
       let res = code
-      if (code.includes(KeyWord)) {
-        const temp = injectCode()
-        res = code.replaceAll(KeyWord, temp)
+      if (code.includes(placeholderKeyWord)) {
+        const temp = injectCode(modulesConfig)
+        res = code.replaceAll(placeholderKeyWord, temp)
         console.log(temp)
       }
 

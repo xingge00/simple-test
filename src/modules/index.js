@@ -1,5 +1,7 @@
+import constRouter from '@/router/constRouter'
 
 let modules
+
 // !!injectModules //
 
 const errorList = []
@@ -33,7 +35,7 @@ const { store: initStore, router: initRouter, component: initComponent } = Objec
     getters: {},
     modules: {},
   },
-  router: [],
+  router: constRouter,
   component: {},
 })
 
@@ -58,4 +60,3 @@ export {
   initRouter,
   initComponent,
 }
-export default {}
